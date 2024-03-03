@@ -2,6 +2,8 @@
   const app = document.querySelector(".app");
   const socket = io();
 
+  app.querySelector(".screen .form-input input").focus();
+
   function send_message() {
     let message = app.querySelector(".chat-screen #message-input").value;
     if (message.length == 0) {
@@ -27,12 +29,12 @@
     uname = username;
     app.querySelector(".join-screen").classList.remove("active");
     app.querySelector(".chat-screen").classList.add("active");
+    app.querySelector(".chat-screen .typebox input").focus();
   }
 
   let uname;
-  app
-    .querySelector(".join-screen #join-user")
-    .addEventListener("click", join_chat());
+
+  app.querySelector(".join-screen #join-user").addEventListener("click", join_chat);
 
   app
     .querySelector(".screen .form-input input")
@@ -52,7 +54,7 @@
 
   app
     .querySelector(".chat-screen #send-message")
-    .addEventListener("click", send_message());
+    .addEventListener("click", send_message);
 
   app.querySelector(".chat-screen #exit-chat").addEventListener("click", () => {
     socket.emit("exituser", uname);
