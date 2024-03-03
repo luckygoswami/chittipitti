@@ -2,21 +2,7 @@
   const app = document.querySelector(".app");
   const socket = io();
 
-  let uname;
-  app
-    .querySelector(".join-screen #join-user")
-    .addEventListener("click", function () {
-      let username = app.querySelector(".join-screen #username").value;
-      if (username.length == 0) {
-        return;
-      }
-      socket.emit("newuser", username);
-      uname = username;
-      app.querySelector(".join-screen").classList.remove("active");
-      app.querySelector(".chat-screen").classList.add("active");
-    });
-
-  app.querySelector(".chat-screen #send-message").addEventListener("click", () => {
+  function send_message() {
     let message = app.querySelector(".chat-screen #message-input").value;
     if (message.length == 0) {
       return;
@@ -30,7 +16,43 @@
       text: message,
     });
     app.querySelector(".chat-screen #message-input").value = "";
-  });
+  }
+
+  function join_chat() {
+    let username = app.querySelector(".join-screen #username").value;
+    if (username.length == 0) {
+      return;
+    }
+    socket.emit("newuser", username);
+    uname = username;
+    app.querySelector(".join-screen").classList.remove("active");
+    app.querySelector(".chat-screen").classList.add("active");
+  }
+
+  let uname;
+  app
+    .querySelector(".join-screen #join-user")
+    .addEventListener("click", join_chat());
+
+  app
+    .querySelector(".screen .form-input input")
+    .addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        join_chat();
+      }
+    });
+
+  app
+    .querySelector(".chat-screen .typebox input")
+    .addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        send_message();
+      }
+    });
+
+  app
+    .querySelector(".chat-screen #send-message")
+    .addEventListener("click", send_message());
 
   app.querySelector(".chat-screen #exit-chat").addEventListener("click", () => {
     socket.emit("exituser", uname);

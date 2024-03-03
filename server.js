@@ -1,5 +1,4 @@
 const express = require("express");
-const { ftruncateSync } = require("fs");
 const path = require("path");
 
 const app = express();
@@ -22,5 +21,5 @@ io.on("connection", function (socket) {
 });
 
 server.listen(5000, () => {
-  console.log("listening to server");
+  console.log("server started");
 });
